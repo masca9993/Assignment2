@@ -28,9 +28,15 @@ public class TakeAwayBillImpl implements TakeAwayBill {
         for (int i = 0; i < itemsOrdered.size(); i++) {
             price += itemsOrdered.get(i).getPrice();
         }
+        
         price -= IceCreamDiscount(itemsOrdered);
+        
         if (price - DrinksPrice(itemsOrdered) > 50) {
             price -= 0.1 * price;
+        }
+        
+        if (price < 10) {
+            price += 0.5;
         }
 
         

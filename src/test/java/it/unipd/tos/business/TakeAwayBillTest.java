@@ -155,5 +155,27 @@ public class TakeAwayBillTest {
         List<MenuItem> ord=new ArrayList<MenuItem>();
         bill.getOrderPrice(ord, u, LocalTime.of(18,23));    
     }
+    
+    @Test 
+    public void testOrderPrice_LessThan10Euros() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(1998, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 1));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 2));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 2));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 1));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 1));
+            
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(18,23));
+             assertEquals(price, 10, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
 
 }
