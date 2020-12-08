@@ -18,7 +18,13 @@ import it.unipd.tos.model.itemType;
 public class TakeAwayBillImpl implements TakeAwayBill {
 
     public double getOrderPrice(List<MenuItem> itemsOrdered, User user, LocalTime time) throws RestaurantBillException {
+       
         double price=0;
+        
+        if (itemsOrdered.size() > 30 || itemsOrdered.size()==0) {
+            throw new RestaurantBillException();
+        }
+        
         for (int i = 0; i < itemsOrdered.size(); i++) {
             price += itemsOrdered.get(i).getPrice();
         }

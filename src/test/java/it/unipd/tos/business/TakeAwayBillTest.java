@@ -137,5 +137,23 @@ public class TakeAwayBillTest {
     fail();
         }   
     }
+    
+    @Test(expected = RestaurantBillException.class)
+    public void testOrderPrice_MoreThan30Orders() throws RestaurantBillException{
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(1998, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        for (int i=0; i<31; i++)
+            ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        bill.getOrderPrice(ord, u, LocalTime.of(18,23));    
+    }
+    
+    @Test(expected = RestaurantBillException.class)
+    public void testOrderPrice_0Orders() throws RestaurantBillException{
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(1998, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        bill.getOrderPrice(ord, u, LocalTime.of(18,23));    
+    }
 
 }
