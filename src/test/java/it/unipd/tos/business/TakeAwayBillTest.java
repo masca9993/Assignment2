@@ -46,5 +46,27 @@ public class TakeAwayBillTest {
     fail();
         }   
     }
+    
+    @Test
+    public void testOrderPrice_IceCreamDiscount() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(1998, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 2));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 5));    
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(18,23));
+             assertEquals(price, 23, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
 
 }
