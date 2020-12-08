@@ -1,0 +1,7 @@
+it/unipd/tos/business/exception/RestaurantBillException.class
+it/unipd/tos/model/itemType.class
+it/unipd/tos/model/MenuItem.class
+it/unipd/tos/business/TakeAwayBill.class
+it/unipd/tos/business/TakeAwayBillImpl.class
+it/unipd/tos/model/User.class
+it/unipd/tos/business/exception/TakeAwayBillException.class
