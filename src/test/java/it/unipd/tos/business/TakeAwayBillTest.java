@@ -177,5 +177,193 @@ public class TakeAwayBillTest {
     fail();
         }   
     }
-
+    
+    @Test 
+    public void TestFreeOrder_Rejected() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(2003, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 1));
+            
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(18,23));
+             assertEquals(price, 31, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
+    
+    @Test 
+    public void TestFreeOrder_Accepted() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(2003, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 1));
+            
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(18,26));
+             assertEquals(price, 0, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
+    
+    @Test 
+    public void TestFreeOrder_RejectedSameUser() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(2003, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 1));
+            
+        try
+        {
+             bill.getOrderPrice(ord, u, LocalTime.of(18,12));
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(18,32));
+             assertEquals(price, 31, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
+    
+    @Test 
+    public void TestFreeOrder_AcceptedTwoDifferentUsers() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(2003, 7, 29));
+        User a= new User("Andrea", LocalDate.of(2003, 7, 2));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 1));
+            
+        try
+        {
+             bill.getOrderPrice(ord, u, LocalTime.of(18,12));
+             double price=bill.getOrderPrice(ord, a, LocalTime.of(18,32));
+             assertEquals(price, 0, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
+    
+    @Test 
+    public void TestFreeOrder_RejectedDueAge() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(1998, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 1));
+            
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(18,26));
+             assertEquals(price, 31, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
+    
+    @Test 
+    public void TestFreeOrder_RejectedDueTime_1() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(2003, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 1));
+            
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(11,26));
+             assertEquals(price, 31, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
+    
+    @Test 
+    public void TestFreeOrder_RejectedDueTime_2() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(2003, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 1));
+            
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(19,26));
+             assertEquals(price, 31, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
+    
+    @Test 
+    public void TestFreeOrder_RejectedMoreThan10() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 1));
+        
+        String[] utenti= {"andrea", "damiano", "matteo", "tommaso", "lorenzo", "nicholas", "ibra", "leao", "hauge", "kessie"};
+        
+        for (int i=0; i<10; i++)
+        {
+            User u= new User(utenti[i], LocalDate.of(2003, 7, 29));
+            try
+            {
+                bill.getOrderPrice(ord, u, LocalTime.of(18,10+2*i));
+            }
+            catch (RestaurantBillException e) {
+        fail();
+            } 
+        }
+        User u= new User("conte", LocalDate.of(2003, 7, 29));
+            
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(18,26));
+             assertEquals(price, 31, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
+    
 }
+
+
