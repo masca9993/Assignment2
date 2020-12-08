@@ -23,6 +23,11 @@ public class TakeAwayBillImpl implements TakeAwayBill {
             price += itemsOrdered.get(i).getPrice();
         }
         price -= IceCreamDiscount(itemsOrdered);
+        if (price - DrinksPrice(itemsOrdered) > 50) {
+            price -= 0.1 * price;
+        }
+
+        
         return price;
     }
     
@@ -47,6 +52,19 @@ public class TakeAwayBillImpl implements TakeAwayBill {
         else {
             return 0;
         }
+    }
+    
+    private double DrinksPrice(List<MenuItem> itemsOrdered) {
+
+        double tot_bev = 0;
+
+        for (int i = 0; i < itemsOrdered.size(); i++) {
+            if (itemsOrdered.get(i).getItemType() == itemType.Bevande) {
+                tot_bev += itemsOrdered.get(i).getPrice();
+            }
+        }
+        return tot_bev;
+
     }
 
 }

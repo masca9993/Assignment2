@@ -68,5 +68,74 @@ public class TakeAwayBillTest {
     fail();
         }   
     }
+    
+    @Test 
+    public void testOrderPrice_MoreThan50Discount() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(1998, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 22));
+        ord.add(new MenuItem(itemType.Bevande, "Fanta", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 15));   
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(18,23));
+             assertEquals(price, 54.9, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }   
+    
+    //Prima applico sconto 50% sul gelato meno costoso, poi sul nuovo totale applico sconto del 10% se ci sono ancora le condizioni
+    @Test 
+    public void testOrderPrice_BothDiscounts1() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(1998, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 2));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 3));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 50));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 5));
+            
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(18,23));
+             assertEquals(price, 61.2, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }   
+    
+    @Test 
+    public void testOrderPrice_BothDiscouts2() {
+        TakeAwayBillImpl bill=new TakeAwayBillImpl();
+        User u= new User("Damiano", LocalDate.of(1998, 7, 29));
+        List<MenuItem> ord=new ArrayList<MenuItem>();
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 5));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Gelati, "Banana", 10));
+        ord.add(new MenuItem(itemType.Budini, "Biancaneve", 1));
+            
+        try
+        {
+             double price=bill.getOrderPrice(ord, u, LocalTime.of(18,23));
+             assertEquals(price, 48.5, 0.0001);
+        }
+        catch (RestaurantBillException e) {
+    fail();
+        }   
+    }
 
 }
